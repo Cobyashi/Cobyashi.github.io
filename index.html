@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/yeti/bootstrap.min.css" integrity="sha384-mLBxp+1RMvmQmXOjBzRjqqr0dP9VHU2tb3FK6VB0fJN/AOu7/y+CAeYeWJZ4b3ii" crossorigin="anonymous">
+</head>
+<body class="bg-dark">
+
+    <div class="d-flex min-vh-100 justify-content-center align-items-center">
+        <div id="cardLoading" class="card col-12 col-md-6 col-lg-4" style="display:block;">
+            <div class="card-body">
+                <h1>Loading . . .</h1>
+            </div>
+        </div>
+        <div id="cardInformation" class="card col-12 col-md-6 col-lg-4" style="display:none;">
+            <div class="card-body">
+                <h1 class="text-center mb-4">Cookeville Weather</h1>
+                <hr />
+                <h3 class="text-center">Current Conditions</h3>
+                <div id="weatherInfoParent" class="text-center">
+                    <div class="row justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-thermometer-half" viewBox="0 0 16 16">
+                            <path d="M9.5 12.5a1.5 1.5 0 1 1-2-1.415V6.5a.5.5 0 0 1 1 0v4.585a1.5 1.5 0 0 1 1 1.415"/>
+                            <path d="M5.5 2.5a2.5 2.5 0 0 1 5 0v7.55a3.5 3.5 0 1 1-5 0zM8 1a1.5 1.5 0 0 0-1.5 1.5v7.987l-.167.15a2.5 2.5 0 1 0 3.333 0l-.166-.15V2.5A1.5 1.5 0 0 0 8 1"/>
+                        </svg>
+                        <p id="pTemperature" class="ml-4"></p>
+                    </div>
+                    <div class="row justify-content-center">
+                        <svg id="icnSnow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-snow-fill" viewBox="0 0 16 16" style="display:none;">
+                            <path d="M2.625 11.5a.25.25 0 0 1 .25.25v.57l.501-.287a.25.25 0 0 1 .248.434l-.495.283.495.283a.25.25 0 0 1-.248.434l-.501-.286v.569a.25.25 0 1 1-.5 0v-.57l-.501.287a.25.25 0 0 1-.248-.434l.495-.283-.495-.283a.25.25 0 0 1 .248-.434l.501.286v-.569a.25.25 0 0 1 .25-.25m2.75 2a.25.25 0 0 1 .25.25v.57l.5-.287a.25.25 0 0 1 .249.434l-.495.283.495.283a.25.25 0 0 1-.248.434l-.501-.286v.569a.25.25 0 1 1-.5 0v-.57l-.501.287a.25.25 0 0 1-.248-.434l.495-.283-.495-.283a.25.25 0 0 1 .248-.434l.501.286v-.569a.25.25 0 0 1 .25-.25m5.5 0a.25.25 0 0 1 .25.25v.57l.5-.287a.25.25 0 0 1 .249.434l-.495.283.495.283a.25.25 0 0 1-.248.434l-.501-.286v.569a.25.25 0 0 1-.5 0v-.57l-.501.287a.25.25 0 0 1-.248-.434l.495-.283-.495-.283a.25.25 0 0 1 .248-.434l.501.286v-.569a.25.25 0 0 1 .25-.25m-2.75-2a.25.25 0 0 1 .25.25v.57l.5-.287a.25.25 0 0 1 .249.434l-.495.283.495.283a.25.25 0 0 1-.248.434l-.501-.286v.569a.25.25 0 1 1-.5 0v-.57l-.501.287a.25.25 0 0 1-.248-.434l.495-.283-.495-.283a.25.25 0 0 1 .248-.434l.501.286v-.569a.25.25 0 0 1 .25-.25m5.5 0a.25.25 0 0 1 .25.25v.57l.5-.287a.25.25 0 0 1 .249.434l-.495.283.495.283a.25.25 0 0 1-.248.434l-.501-.286v.569a.25.25 0 0 1-.5 0v-.57l-.501.287a.25.25 0 1 1-.248-.434l.495-.283-.495-.283a.25.25 0 0 1 .248-.434l.501.286v-.569a.25.25 0 0 1 .25-.25m-.22-7.223a5.001 5.001 0 0 0-9.499-1.004A3.5 3.5 0 1 0 3.5 10.25H13a3 3 0 0 0 .405-5.973"/>
+                        </svg>
+                        <svg id="icnRain" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-rain-fill" viewBox="0 0 16 16" style="display:none;">
+                            <path d="M4.158 12.025a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 1 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317m3 0a.5.5 0 0 1 .316.633l-1 3a.5.5 0 1 1-.948-.316l1-3a.5.5 0 0 1 .632-.317m3 0a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 1 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317m3 0a.5.5 0 0 1 .316.633l-1 3a.5.5 0 1 1-.948-.316l1-3a.5.5 0 0 1 .632-.317m.247-6.998a5.001 5.001 0 0 0-9.499-1.004A3.5 3.5 0 1 0 3.5 11H13a3 3 0 0 0 .405-5.973"/>
+                        </svg>
+                        <p id="pPreciptation" class="ml-4"></p>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-sunrise" viewBox="0 0 16 16">
+                                <path d="M7.646 1.146a.5.5 0 0 1 .708 0l1.5 1.5a.5.5 0 0 1-.708.708L8.5 2.707V4.5a.5.5 0 0 1-1 0V2.707l-.646.647a.5.5 0 1 1-.708-.708zM2.343 4.343a.5.5 0 0 1 .707 0l1.414 1.414a.5.5 0 0 1-.707.707L2.343 5.05a.5.5 0 0 1 0-.707m11.314 0a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0M8 7a3 3 0 0 1 2.599 4.5H5.4A3 3 0 0 1 8 7m3.71 4.5a4 4 0 1 0-7.418 0H.499a.5.5 0 0 0 0 1h15a.5.5 0 0 0 0-1h-3.79zM0 10a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2A.5.5 0 0 1 0 10m13 0a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5"/>
+                            </svg>
+                            <p id="pSunriseTime"></p>
+                        </div>
+                        <div class="col">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-sunset-fill" viewBox="0 0 16 16">
+                                <path d="M7.646 4.854a.5.5 0 0 0 .708 0l1.5-1.5a.5.5 0 0 0-.708-.708l-.646.647V1.5a.5.5 0 0 0-1 0v1.793l-.646-.647a.5.5 0 1 0-.708.708zm-5.303-.51a.5.5 0 0 1 .707 0l1.414 1.413a.5.5 0 0 1-.707.707L2.343 5.05a.5.5 0 0 1 0-.707zm11.314 0a.5.5 0 0 1 0 .706l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zM11.709 11.5a4 4 0 1 0-7.418 0H.5a.5.5 0 0 0 0 1h15a.5.5 0 0 0 0-1h-3.79zM0 10a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2A.5.5 0 0 1 0 10m13 0a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5"/>
+                            </svg>
+                            <p id="pSunsetTime"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Start Global Variables
+            const strBaseURL = 'https://api.open-meteo.com/v1/forecast'
+        // End Global Variables
+        
+        // Hides the loading card and displays the information card
+        function switchToInfoScreen()
+        {
+            document.querySelector("#cardLoading").style.display = 'none'
+            document.querySelector("#cardInformation").style.display = 'block'
+        }
+
+        // Changes the input for time to a readable version of time
+        function formatStringToTime(string)
+        {
+            // Checks if a zero is in front of time and if it is return a a.m. value
+            if(string[0] == "0")
+            {
+                return string.substr(1) + " a.m."
+            }
+
+            // Determines if given string is a p.m. and returns p.m. value
+            let strHours = string.substr(0, 2)
+            let strMinutes = string.substr(2)
+            if(12 < parseInt(strHours))
+            {
+                // Changes military time to standard time
+                strHours = (parseInt(strHours) - 12).toString()
+                return strHours + strMinutes + " p.m."
+            }
+            else
+            // If it is not p.m. then return a.m.
+            {
+                return string + " a.m."
+            }
+        }
+
+        // Updates cardInformation's info based on parameters
+        function updateWeatherInfo(strTemperature, strRain, strSnow, strPrecipitationPercentage, boolIsDay, strSunRise, strSunSet)
+        {
+            // Sets html temperature
+            document.querySelector("#pTemperature").innerHTML = strTemperature
+
+            // Checks if is Raining and displays raining icon
+            if(strRain > 1)
+            {
+                document.querySelector("#icnRain").style.display = 'block'
+                document.querySelector("#pPreciptation").innerHTML += strPrecipitationPercentage.toString()
+                document.querySelector("#pPreciptation").innerHTML += '%'
+            }
+            // Checks if is Snowing and displays snowing icon
+            else if(strSnow > 1)
+            {
+                document.querySelector("#icnSnow").style.display = 'block'
+                document.querySelector("#pPreciptation").innerHTML += strPrecipitationPercentage.toString()
+                document.querySelector("#pPreciptation").innerHTML += '%'
+            }
+            else
+            // Displays standard precipitation icon if no precipitation
+            {
+                document.querySelector("#icnRain").style.display = 'block'
+                document.querySelector("#pPreciptation").innerHTML += strPrecipitationPercentage.toString()
+                document.querySelector("#pPreciptation").innerHTML += '%'
+            }
+
+            // Sets html Sunrise and Sunset time
+            document.querySelector("#pSunriseTime").innerHTML = formatStringToTime(strSunRise.substr(11))
+            document.querySelector("#pSunsetTime").innerHTML = formatStringToTime(strSunSet.substr(11))
+            
+            switchToInfoScreen()
+        }
+
+        // Gets weather info from Open-Meteo API
+        async function queryWeather() 
+        {
+            try
+            {
+            //Fetch Cookeville weather information
+            const objResponse = await fetch(strBaseURL + `?latitude=36.162838&longitude=-85.50164&current=temperature_2m,is_day,rain,snowfall&daily=sunrise,sunset,precipitation_probability_max&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=America%2FChicago`, 
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type':'application/json'
+                    }
+                })
+
+                if(!objResponse.ok)
+                {
+                    throw new Error(`HTTP Error Status:${objResponse.status}`)
+                }
+                
+                // Parse data as json
+                let objData = await objResponse.json()
+                console.log(objData)
+
+                // Updates Weather information that was taken from the API
+                updateWeatherInfo(
+                    parseInt(objData.current.temperature_2m).toString(), 
+                    objData.current.rain.toString(), 
+                    objData.current.snowfall.toString(),
+                    objData.daily.precipitation_probability_max[0].toString(), 
+                    objData.current.is_day, 
+                    objData.daily.sunrise[0], 
+                    objData.daily.sunset[0])
+
+            }
+            // console log error from fetching data
+            catch(objError)
+            {
+                console.log('Error fetching objData', objError)
+            }
+        }
+
+        queryWeather()
+
+    </script>
+</body>
+</html>
